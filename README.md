@@ -1,5 +1,5 @@
 # vue-weather
-> A weather demo app using [Vue.js 2](http://vuejs.org/guide/) & [Vuex](https://github.com/vuejs/vuex)
+> A weather demo app using [Vue.js 2](http://vuejs.org/guide/) & [Vuex](https://github.com/vuejs/vuex). Weather information is provided in real time using Apixu API.
 
 <p align="center">
 	<a href="http://www.ozoono.com/vuejs/vue-weather/index.html" target="_blank">
@@ -16,9 +16,9 @@
 ## Notes
 * Built using `webpack` starter in [`vue-cli`](https://github.com/vuejs/vue-cli)
 
-* Weather information from ([Apixu API](https://www.apixu.com/). You need to signup to get a personal free key to start using API.
+* Weather information from [Apixu API](https://www.apixu.com/). You need to signup to get a personal free key to start using API.
 
-* Autocomplete component based on (https://alligator.io/vuejs/vue-autocomplete-component/) and (https://github.com/paliari/v-autocomplete) (by @paliari)
+* Autocomplete component based on https://alligator.io/vuejs/vue-autocomplete-component/ and https://github.com/paliari/v-autocomplete
 
 ## Quickstart
 To start:
