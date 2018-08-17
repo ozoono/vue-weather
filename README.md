@@ -14,7 +14,7 @@
  - [`moment`](https://github.com/moment/moment)
 
 ## Notes
-* Built using `webpack` starter in [`vue-cli`](https://github.com/vuejs/vue-cli)
+* Built using `webpack` starter in [`vue-cli`](https://github.com/vuejs/vue-cli) (Vue CLI 2)
 
 * Weather information from [Apixu API](https://www.apixu.com/). You need to signup to get a personal free key to start using API.
 
