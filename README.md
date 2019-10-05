@@ -28,7 +28,7 @@ $ npm install
 
 To develop:
 ```bash
-$ npm run dev
+$ npm run serve
 ```
 
 To build for production:
