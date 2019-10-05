@@ -3,7 +3,7 @@
 
 <p align="center">
 	<a href="http://www.ozoono.com/vuejs/vue-weather/index.html" target="_blank">
- 		<img src="http://www.ozoono.com/vuejs/vue-weather/screenshot.png" alt="vue-weather demo" />
+ 		<img src="http://www.ozoono.com/vuejs/vue-weather/screenshot_.png" alt="vue-weather demo" />
  		<br/>
  		- Live demo -
  	</a>
