@@ -1,10 +1,10 @@
 <template>
   <div class="autocomplete ui fluid search selection dropdown active visible">
     <input
-	    type="text"
-	    v-model="search"
-	    @input="onChange"
-	    @keydown.enter="enter"
+      type="text"
+      v-model="search"
+      @input="onChange"
+      @keydown.enter="enter"
       @keydown.down="down"
       @keydown.up="up"
       class="search"
@@ -12,17 +12,17 @@
     <i class="search icon"></i>
 
     <div 
-    	v-show="isOpen"
-    	class="menu autocomplete-results"
+      v-show="isOpen"
+      class="menu autocomplete-results"
     >
       <div 
-	      v-for="(result, i) in matches"
-	      :key="i"
-	      @click="setResult(result)"
-      	class="item"
-      	:class="{ 'is-active': i === counter }"
+        v-for="(result, i) in matches"
+        :key="i"
+        @click="setResult(result)"
+        class="item"
+        :class="{ 'is-active': i === counter }"
       >
-      	<i :class="result.key" class="flag"></i>
+        <i :class="result.key" class="flag"></i>
         <!--<span v-html="$options.filters.highlight(result, search)"></span>-->
         {{ result.city }} <small>({{ result.country }})</small>
       </div>
@@ -35,8 +35,8 @@ export default {
 
   name: 'Autocomplete',
 
-	props: {
-		value: {
+  props: {
+    value: {
       type: String,
       required: true
     },
@@ -49,9 +49,9 @@ export default {
 
   data () {
     return {
-    	search: this.value,
-    	isOpen: false,
-    	counter: -1
+      search: this.value,
+      isOpen: false,
+      counter: -1
     }
   },
 
@@ -63,14 +63,14 @@ export default {
   },
 
   computed: {
-  	matches(){
-  		return this.search != "" ? this.items.filter((obj) => {
+    matches(){
+      return this.search != "" ? this.items.filter((obj) => {
         return obj.city.toLowerCase().indexOf(this.search.toLowerCase()) >= 0
       }) : []
-  	}
+    }
   },
 
-	mounted() {
+  mounted() {
     document.addEventListener('click', this.handleClickOutside)
   },
 
@@ -79,20 +79,32 @@ export default {
   },
 
   methods:{
-  	onChange(){
+    onChange(){
       this.isOpen = true
-  	},
-		setResult(result) {
-			this.$emit('itemSelected', result);
-		  this.search = result.city;		  
-		  this.isOpen = false;
-		},
+    },
+    setResult(result) {
+      this.$emit('item-selected', result);
+      this.search = result.city;		  
+      this.isOpen = false;
+    },
     // When enter pressed on the input
     enter () {
-      this.$emit('itemSelected', this.matches[this.counter]);
-      this.search = this.matches[this.counter].city;
-      this.isOpen = false;
-      this.counter = -1;
+      let match = null;
+      
+      if (this.counter != -1) {
+        match = this.matches[this.counter]
+        this.search = this.matches[this.counter].city;
+        this.isOpen = false;
+        this.counter = -1;        
+      } 
+      else{
+        match = {
+          city: this.search,
+          country: '',
+          key: ''
+        }
+      }
+      this.$emit('item-selected', match);
     },
 
     // When up pressed while suggestions are open
@@ -111,7 +123,7 @@ export default {
       }
     },
 
-		handleClickOutside(evt) {
+    handleClickOutside(evt) {
       if (!this.$el.contains(evt.target)) {
         this.isOpen = false;
         this.counter = -1;
@@ -135,10 +147,10 @@ export default {
   width: 100%;
  }
 .autocomplete .autocomplete-results{
-	display: block;
+  display: block;
 }
 .item{
-	cursor: pointer;
+  cursor: pointer;
 }
 .item.is-active,
 .item:hover {

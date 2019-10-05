@@ -1,9 +1,8 @@
 <template>
     <div>
-      <div class="loading" v-if="loading">Loading...</div>
       <div class="w-location">
-        <h1><i class="marker icon yellow"></i>{{ current.name }} <em>({{ current.country }})</em></h1>
-        <p class="w-date">{{ current.datetime | formatDate }}</p>
+        <h1><i class="marker icon yellow"></i>{{ city }} <em>({{ country }})</em></h1>
+        <p class="w-date">{{ datetime | formatDate }}</p>
       </div>
       
       <div v-if="error" class="ui secondary inverted red segment center aligned">
@@ -11,67 +10,69 @@
       </div>   
       <div v-else> 
         <div class="ui mini buttons w-scale">
-          <button class="ui mini compact button" :class="{ positive: (scale == 'C') }" v-on:click="changeScale('C')">&deg;C</button>
-          <button class="ui mini compact button" :class="{ positive: (scale == 'F') }" v-on:click="changeScale('F')">&deg;F</button>
+          <button class="ui mini compact button" :class="{ positive: (scale == 'C') }" @click="changeScale('C')">&deg;C</button>
+          <button class="ui mini compact button" :class="{ positive: (scale == 'F') }" @click="changeScale('F')">&deg;F</button>
         </div>         
 
-        <div class="ui basic center aligned segment">
+        <div class="ui basic center aligned segment" v-if="weather != null">
           <div>
-            <img :src='current.conditionIcon' class="w-icon"><span v-if="scale == 'C'" class="w-temp">{{ current.tempC }}&deg;</span><span v-else class="w-temp">{{ current.tempF }}&deg;</span>
+            <img :src='icon' class="w-icon" :alt='description' ><span class="w-temp">{{ temp | tempScale(scale) }}&deg;</span>
           </div>
-          <div><span class="w-condition">{{ current.conditionText }}</span></div>
+          <div><span class="w-condition">{{ description }}</span></div>
         </div>
-
-        <ul v-if="forecast.length > 0" class="w-forecast-list">
-          <ForecastItem v-for="(item, index) in forecast" :key="index" :item="item" :datetime="current.datetime" :scale="scale">
-          </ForecastItem>
-        </ul>        
+        
       </div>
 
 	</div>
 </template>
 
 <script>
-import moment from 'moment'
+import dayjs from 'dayjs'
+import { baseImg } from '@/config'
 import { mapState, mapGetters } from 'vuex'
-import ForecastItem from './ForecastItem'
+import { weatherMixins } from '@/mixins/weatherMixins'
 
 export default {
 
   name: 'WeatherInfo',
-
-  components: {
-    ForecastItem
-  },
-
+  mixins: [weatherMixins],
+  props:['loading'],
   data () {
     return {
-      scale: 'C'
+      baseImg
     }
   },
-
   computed: {
     ...mapState([
-      'loading',
-      'error'
-    ]),
+      'city',
+      'country',
+      'scale'
+    ]), 
     ...mapGetters([
-      'current',
-      'forecast',
-    ])
+      'temp',
+      'datetime',
+      'weather'
+    ]),       
+    icon(){
+      return (this.weather != null) ? `${this.baseImg}${this.weather.icon}.png` : '#'
+    },
+    description(){
+      return (this.weather != null) ? this.weather.description : ''
+    },
+    error(){
+      return (!this.loading && this.temp == null)
+    }
   },
 
   filters:{
     formatDate(value) {
-      if (value) {
-        return moment(String(value)).format('ddd, MMM DD - HH:mm')
-      }
+      return (value) ? dayjs(value).format('dddd, MMM D - HH:mm') : ''
     }
   },
 
   methods: {
     changeScale(scale){
-      this.scale = scale;
+      this.$emit('change-scale', scale)
     }
   } 
 }
@@ -93,15 +94,7 @@ p{
   margin: 0;
 }
 
-.loading{
-  z-index: 999;
-  top: 0;
-  right: 0;
-  position: absolute;
-  padding: 5px;
-  color: #fff;
-  background-color: #0a0;
-}
+
 .w-location{
   margin-top: 1em;
 }
@@ -111,7 +104,9 @@ p{
   font-size: .9em;
 }
 .w-icon{
-  vertical-align: top;
+  width: 50px;
+  height: 50px;
+  vertical-align: text-bottom;
 }
 .w-temp{
   margin-right: .1em;
@@ -126,17 +121,6 @@ p{
 }
 .w-condition{
   font-size: 1.3em;
-}
-.w-forecast-list{
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  justify-content: center;
-  margin: 1em 0 0 0;
-  padding: 1em 0;
-  background-color: #24282a;
 }
 .mini{
   font-size: 2rem;

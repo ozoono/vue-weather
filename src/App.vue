@@ -2,57 +2,63 @@
   <div id="app">
     <div class="ui segments">
 
-      <div class="ui inverted segment header">
-        <h4><img class="ui middle aligned image logo" src="./assets/logo-vue.png" /> What's the weather like in...?</h4>
-      </div>
+      <Header></Header>
 
       <div class="ui grey segment main">
-        <Autocomplete :items="items" :value="init.city" @itemSelected="getData"></Autocomplete>  
-        <WeatherInfo></WeatherInfo>
+        <div class="loading" v-if="loading">Loading...</div>
+        <Autocomplete 
+          :items="items" 
+          :value="init.city" 
+          @item-selected="getData"
+        ></Autocomplete>  
+        <WeatherInfo 
+          :loading="loading" 
+          @change-scale="setScale"
+        ></WeatherInfo>
+        <ForecastList></ForecastList> 
       </div>
+
     </div>
 
-    <div class="footer">
-      <button class="ui basic button">
-        <a href="https://github.com/ozoono/vue-weather"><i class="github icon black"></i>Repo on Github</a>
-      </button>
-
-      <button class="ui basic button"> 
-        <a href="http://vuejs.org"><i class="checkmark icon black"></i>Vue 2.x</a>   
-      </button>
-    </div>    
+    <Footer></Footer>   
   </div>
 </template>
 
 <script>
-import Autocomplete from './components/Autocomplete'
-import WeatherInfo from './components/WeatherInfo'
-import cities from './cities'
+import Header from '@/components/Header'
+import Autocomplete from '@/components/Autocomplete'
+import WeatherInfo from '@/components/WeatherInfo'
+import ForecastList from '@/components/ForecastList'
+import Footer from '@/components/Footer'
+import { initCity, cities } from '@/config'
 
 export default {
   name: 'app',
   components:{
+    Header,
     Autocomplete,
-    WeatherInfo    
+    WeatherInfo,
+    ForecastList,
+    Footer    
   },
-
   data () {
     return {
-      init: {
-        city: 'Madrid',
-        country: 'Spain'
-      },
-      items: cities
+      init: initCity,
+      items: cities,
+      loading: true
     }
   },
-
   mounted: function(){
     this.getData(this.init);
   },
-
   methods: {
-    getData(valueSelected){
-      this.$store.dispatch('FETCH_WEATHER', valueSelected)
+    async getData(valueSelected){
+      this.loading = true
+      await this.$store.dispatch('FETCH_WEATHER', valueSelected)
+      this.loading = false
+    },
+    setScale(scale){
+      this.$store.dispatch('SET_SCALE', scale)
     }
   }
 }
@@ -80,9 +86,19 @@ body{
 }
 .main{
   background-color: #1b1f21 !important;  
+  min-height: 190px;
 }
 .footer {
     margin-top: 50px;
     text-align: center;
+}
+.loading{
+  z-index: 999;
+  top: 0;
+  right: 0;
+  position: absolute;
+  padding: 5px;
+  color: #fff;
+  background-color: #0a0;
 }
 </style>

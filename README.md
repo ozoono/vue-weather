@@ -1,37 +1,29 @@
-# vue-weather
-> A weather demo app using [Vue.js 2](http://vuejs.org/guide/) & [Vuex](https://github.com/vuejs/vuex). Weather information is provided in real time using Apixu API.
+# vue-weather2
 
-<p align="center">
-	<a href="http://www.ozoono.com/vuejs/vue-weather/index.html" target="_blank">
- 		<img src="http://www.ozoono.com/vuejs/vue-weather/screenshot.png" alt="vue-weather demo" />
- 		<br/>
- 		- Live demo -
- 	</a>
-</p>
-
-## Other dependencies
- - [`axios`](https://github.com/axios/axios)
- - [`moment`](https://github.com/moment/moment)
-
-## Notes
-* Built using `webpack` starter in [`vue-cli`](https://github.com/vuejs/vue-cli) (Vue CLI 2)
-
-* Weather information from [Apixu API](https://www.apixu.com/). You need to signup to get a personal free key to start using API.
-
-* Autocomplete component based on https://alligator.io/vuejs/vue-autocomplete-component/ and https://github.com/paliari/v-autocomplete
-
-## Quickstart
-To start:
-```bash
-$ npm install
+## Project setup
+```
+npm install
 ```
 
-To develop:
-```bash
-$ npm run dev
+### Compiles and hot-reloads for development
+```
+npm run serve
 ```
 
-To build for production:
-```bash
-$ npm run build
+### Compiles and minifies for production
 ```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
